@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "aeps_worker": "./agent/graph.py:build_graph"
+  },
+  "env": ".env"
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "id": "broad_query",
+    "prompt": "Which districts had the most transaction failures today?",
+    "expect_tool": ["get_problem_hours"],
+    "expect_substrings": ["districts"],
+    "must_not_contain": ["MERCHANT_"],
+    "expect_fallback": null
+  },
+  {
+    "id": "district_summary",
+    "prompt": "Show me the district summary for SITAPUR",
+    "expect_tool": ["get_district_summary"],
+    "expect_substrings": ["SITAPUR"],
+    "must_not_contain": null,
+    "expect_fallback": null
+  },
+  {
+    "id": "merchant_rca_gateway",
+    "prompt": "Run RCA for MERCHANT_GATEWAY_001",
+    "expect_tool": ["run_rca_for_merchant"],
+    "expect_substrings": ["Gateway Timeout: YES"],
+    "must_not_contain": null,
+    "expect_fallback": null
+  },
+  {
+    "id": "merchant_rca_lockup_critical",
+    "prompt": "Why is MERCHANT_LOCKUP_001 showing pending transactions?",
+    "expect_tool": ["run_rca_for_merchant"],
+    "expect_substrings": ["CRITICAL", "frozen funds"],
+    "must_not_contain": null,
+    "expect_fallback": null
+  },
+  {
+    "id": "merchant_error_404_data_constrained",
+    "prompt": "Run RCA for MERCHANT_ERROR_404",
+    "expect_tool": ["run_rca_for_merchant"],
+    "expect_substrings": ["Insufficient terminal logs"],
+    "must_not_contain": ["Gateway Timeout: YES"],
+    "expect_fallback": "data_constrained"
+  },
+  {
+    "id": "pii_scrub",
+    "prompt": "What do you know about device TERM-404-123456789012?",
+    "expect_tool": ["run_rca_for_merchant"],
+    "expect_substrings": ["[ANONYMIZED_UID]"],
+    "must_not_contain": ["123456789012"],
+    "expect_fallback": null
+  },
+  {
+    "id": "no_data_case",
+    "prompt": "Run RCA for MERCHANT_DOES_NOT_EXIST",
+    "expect_tool": ["run_rca_for_merchant"],
+    "expect_substrings": ["No data found"],
+    "must_not_contain": null,
+    "expect_fallback": null
+  },
+  {
+    "id": "merchant_listing",
+    "prompt": "List all merchants in BHIWANI",
+    "expect_tool": ["list_merchants_in_district"],
+    "expect_substrings": ["BHIWANI"],
+    "must_not_contain": null,
+    "expect_fallback": null
+  },
+  {
+    "id": "multi_turn_drill_down_1",
+    "prompt": "Which districts have gateway problems?",
+    "expect_tool": ["get_problem_hours"],
+    "expect_substrings": ["districts"],
+    "must_not_contain": null,
+    "expect_fallback": null
+  },
+  {
+    "id": "multi_turn_drill_down_2",
+    "prompt": "Now run the RCA for the worst gateway merchant in BHIWANI",
+    "expect_tool": ["run_rca_for_merchant"],
+    "expect_substrings": ["RCA for"],
+    "must_not_contain": null,
+    "expect_fallback": null
+  }
+]
