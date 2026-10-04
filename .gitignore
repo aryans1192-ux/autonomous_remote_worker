@@ -21,6 +21,7 @@ venv/
 
 # Data & runtime artifacts
 *.db
+*.duckdb
 logs/
 *.log
 

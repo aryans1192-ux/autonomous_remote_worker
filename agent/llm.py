@@ -12,8 +12,10 @@ log = logging.getLogger("aeps.agent")
 
 load_dotenv()
 
+DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b"
+
 MODELS = {
-    "groq": ("langchain_groq", "ChatGroq", "openai/gpt-oss-120b", "GROQ_API_KEY"),
+    "groq": ("langchain_groq", "ChatGroq", DEFAULT_GROQ_MODEL, "GROQ_API_KEY"),
     "openai": ("langchain_openai", "ChatOpenAI", "gpt-4o-mini", "OPENAI_API_KEY"),
     "anthropic": ("langchain_anthropic", "ChatAnthropic", "claude-3-5-haiku-latest", "ANTHROPIC_API_KEY"),
 }
@@ -35,6 +37,8 @@ def _resolve_order() -> list[str]:
 
 def build_llm(provider: str) -> BaseChatModel:
     module_name, class_name, model, key_env = MODELS[provider]
+    if provider == "groq":
+        model = os.getenv("GROQ_MODEL", model)
     module = __import__(module_name, fromlist=[class_name])
     cls = getattr(module, class_name)
     api_key = os.getenv(key_env)
